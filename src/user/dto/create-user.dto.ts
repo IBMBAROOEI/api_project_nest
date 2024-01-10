@@ -3,6 +3,7 @@ import { IsEmail,IsString ,IsNotEmpty, MinLength, MaxLength, Matches} from "clas
 
 export class CreateUserDto {
 
+    id:string;
     refreshToken: string;
 
     @IsEmail({},{message:'فرمت ایمیل معتبر نیست'})

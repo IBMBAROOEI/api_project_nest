@@ -12,12 +12,13 @@ export class User {
   // id: string;
  
   @Prop()
-  refreshToken: string;
+  refreshToken: string|null;
 
   @Prop()
   password:string;
-  id: any;
-  static _id: any;
+  _id: string;
+  // id: any;
+  // static _id: any;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

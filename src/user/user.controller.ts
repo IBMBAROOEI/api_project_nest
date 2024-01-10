@@ -1,23 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, Res, UseGuards,Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, Res, UseGuards,Request, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import {JwtAuthGuard} from'src/jwt-auth.guard'
+import {RefreshTokenGuard} from'src/jwt-auth.guardResresh'
+
 import { User } from './user.schemas';
+import { RefreshTokenDto } from './dto/refresh-user.dto';
 
 
 @Controller('api/user')
 export class UserController {
   constructor(private readonly userService: UserService,
     private readonly jwtService:JwtService,
+     
 
     ) {}
 
 
-  @Post('/register')
-  //  async createUser ( @Res() res:Response,@Body() createUserDto: CreateUserDto) {
+  @Post('register')
     
     
      createUser(@Body() createUserDto: CreateUserDto) {
@@ -26,47 +29,61 @@ export class UserController {
 
 
 
-
-  @Get('/profile')
-  @UseGuards(JwtAuthGuard)
-  async getProfile(@Request() req) {
-   
-    const { sub: id, email } = req.user;
-    return {
-      id,
-      email,
-    };
-  }
+  @Post('login')
+  loginuser(@Body() data: CreateUserDto) {
+    return this.userService.loginuser(data);
   }
 
 
 
-//     const  {email, password}=createUserDto
+  @Post('logout')
+@UseGuards(JwtAuthGuard)
+async logout(@Req() req):Promise<void> {
+  const userId = req.user.id;
+  await this.userService.logout(userId);
+}
+
+
+
+
+@Post('refresh')
+@UseGuards(RefreshTokenGuard)
+
+async refreshToken(@Body('refreshToken') refreshToken: string, @Request() req){
+  const id = req.user.id; 
+   console.log(id)
   
-//  const isDuplicate = await this.userService.checkemail({email});
-//  if (isDuplicate) {
+  // فرض کنید که اطلاعات کاربر در درخواست در متغیر user ذخیره شده است و شناسه کاربر درون آن قرار دارد
+  return this.userService.refreshTokens(id, refreshToken);
+}
 
 
-//   return res.status(HttpStatus.BAD_REQUEST).json({ message: 'ایمیل تکراری است' }); }
 
-      
-//       const saltOrRounds = 10;
-//       const hashedPassword = await bcrypt.hash(password, saltOrRounds);
-//       const data = await this.userService.createUser(
-//         email,
-//         hashedPassword,
-//       );
+// @Post('refresh')
+// @UseGuards(RefreshTokenGuard)
+// async refreshToken(@Body('refreshToken') refreshToken: string, @Req() req: Request) {
+//   const id = req.user.id; // فرض کنید که اطلاعات کاربر در درخواست در متغیر user ذخیره شده است و شناسه کاربر درون آن قرار دارد
+//   return this.userService.refreshTokens(id, refreshToken);
+// }
 
-// ///      console.log(result. id: ObjectId,
-//       //);
-//       const payload = ({  id:data.id, email: data.email });
 
-//       return {
-//         data,
-//         access_token:this.jwtService.sign(payload),
-//       };
 
-    
+
+ 
+  @Get('/profile')
+@UseGuards(JwtAuthGuard)
+async getProfile(@Request() req) {
+  const { id, email } = req.user;
+  return {
+    id,
+    email,
+  };
+}
+  }
+
+
+
+
 
 
 
