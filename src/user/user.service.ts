@@ -99,24 +99,24 @@ export class UserService {
 
 
 
-  async refreshTokens(id: string,@new Headers('Authorization') authorization: string, refreshToken: string): Promise<{ accessToken: string; refreshToken: string; }> {
+  // async refreshTokens(id: string,@new Headers('Authorization') authorization: string, refreshToken: string): Promise<{ accessToken: string; refreshToken: string; }> {
 
     
-    const user = await this.findById(id);
-    if (!user || !user.refreshToken){
-      throw new ForbiddenException('Accesoihihihs Denied');
+  //   const user = await this.findById(id);
+  //   if (!user || !user.refreshToken){
+  //     throw new ForbiddenException('Accesoihihihs Denied');
 
-    }
-    const refreshTokenMatches = await argon2.verify(
-      user.refreshToken,
-      refreshToken,
-    );
+  //   }
+  //   const refreshTokenMatches = await argon2.verify(
+  //     user.refreshToken,
+  //     refreshToken,
+  //   );
 
-    if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
-    const tokens = await this.getTokens(user._id, user.email);
-    await this.updateRefreshToken(user._id, tokens.refreshToken);
-    return tokens;
-  }
+  //   if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+  //   const tokens = await this.getTokens(user._id, user.email);
+  //   await this.updateRefreshToken(user._id, tokens.refreshToken);
+  //   return tokens;
+  // }
   
 
 

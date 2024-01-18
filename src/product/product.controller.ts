@@ -16,13 +16,14 @@ export class ProductController {
  
 
   @Post()
- async create(@Res() res:Response, @Body() createProductDto: CreateProductDto): Promise<Response<any, Record<string, any>>> {
+ async create(@Res() res:Response, @Body() createProductDto: CreateProductDto, @Body('imageUrl') imageUrl: string[]): 
+ Promise<Response<any, Record<string, any>>> {
   
      try{
  
 
-    const productdata=  await this.productService.create(createProductDto);
-   return res.status (HttpStatus.CREATED).json({productdata});
+    const data=  await this.productService.create(createProductDto,imageUrl);
+   return res.status (HttpStatus.CREATED).json({data});
 
      }catch(e){
       return res.status (HttpStatus.INTERNAL_SERVER_ERROR).

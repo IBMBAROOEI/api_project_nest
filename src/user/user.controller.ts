@@ -21,8 +21,7 @@ export class UserController {
 
 
   @Post('register')
-    
-    
+  
      createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
@@ -46,16 +45,16 @@ async logout(@Req() req):Promise<void> {
 
 
 
-@Post('refresh')
-@UseGuards(RefreshTokenGuard)
+// @Post('refresh')
+// @UseGuards(RefreshTokenGuard)
 
-async refreshToken(@Body('refreshToken') refreshToken: string, @Request() req){
-  const id = req.user.id; 
-   console.log(id)
+// async refreshToken(@Body('refreshToken') refreshToken: string, @Request() req){
+//   const id = req.user.id; 
+//    console.log(id)
   
-  // فرض کنید که اطلاعات کاربر در درخواست در متغیر user ذخیره شده است و شناسه کاربر درون آن قرار دارد
-  return this.userService.refreshTokens(id, refreshToken);
-}
+//   // فرض کنید که اطلاعات کاربر در درخواست در متغیر user ذخیره شده است و شناسه کاربر درون آن قرار دارد
+//   return this.userService.refreshTokens(id, refreshToken);
+// }
 
 
 
