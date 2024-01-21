@@ -20,14 +20,13 @@ export class ProductController {
     return this.productService.create(createProductDto);
   }
 
-  //  @Get()
-  //  async findAll(@Res() res:Response) {
+   @Get()
+   async findAll():Promise<Product[]> {
     
-  //  const data=  await this.productService.findAll();
+ return await this.productService.findAll();
   
-  //  return res.status (HttpStatus.OK).json({data});
 
-  //  }
+   }
 
   //  @Get(':id')
   //  async findOne(@Param('id') id: string,@Res() res:Response) {

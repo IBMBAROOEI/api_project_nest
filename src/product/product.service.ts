@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import {CreateProductDto, ImageDto } from './dto/create-product.dto';
 import {  Product, ProductDocument } from './schemas/product.schema';
 import { Model } from 'mongoose';
@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { Image, ImageDocument, } from '../imageupload/schemas/image.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { Configerror } from '../Erorrhandel/reponse.service';
 
 
 @Injectable()
@@ -13,6 +14,7 @@ export class ProductService {
 constructor(
   
   @InjectModel(Image.name)private readonly ImagetModel:Model<ImageDocument>,
+  private readonly configerror:Configerror,
 
   @InjectModel('Product')private readonly productModel:Model<Product>) { }
 
@@ -22,30 +24,58 @@ constructor(
     try {
 
       const{name,price,quantity,images}=createProductDto;
-       
-
-      const imageUrls = images.map((image: ImageDto) => image.imageUrl);
-
       const newProduct = await this.productModel.create({
         name,
         price,
         quantity,
-        images: imageUrls.map((imageUrl) => ({ imageUrl })),
+        images: images.map((image: ImageDto) => ({
+          
+          imageUrl:image.imageUrl,
+
+        })),
       });
-      return newProduct;
+
+      
+      this.configerror.setSuccess(true);
+      this.configerror.setMessage("محصول با موفقیت ثبت شد")
+
+  this.configerror.setData(newProduct);
+
+  return  this.configerror.getResponse();
+ 
     } catch (error) {
-      console.error(error);
-      throw new Error('خطایی در ایجاد محصول رخ داده است.');
+      this.configerror.setSuccess(false);
+      this.configerror.addError('خطا درایجاد محصول');
+      throw new HttpException(this.configerror.getResponse(),HttpStatus.
+      
+      INTERNAL_SERVER_ERROR)
+      
     }
   }
 
  
 
-// async findAll():Promise<Product[]>{
+async findAll():Promise<Product[]>{
   
+    try{
      
-//   return  await this.productModel.find().exec();
-//   }
+const product= await this.productModel.find().exec();
+   this.configerror.setSuccess(true);
+  
+
+this.configerror.setData(product);
+
+return  this.configerror.getResponse();
+    }
+    catch(error){
+      this.configerror.setSuccess(false);
+      this.configerror.addError('خطا در نمایش محصول');
+      throw new HttpException(this.configerror.getResponse(),HttpStatus.
+      
+      INTERNAL_SERVER_ERROR)
+
+    }
+  }
   
  
 //   async findOne(id: string):Promise<Product>{ 
