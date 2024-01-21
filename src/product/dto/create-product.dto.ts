@@ -1,17 +1,22 @@
 
-import { IsString ,IsNotEmpty} from "class-validator";
+import { IsString ,IsNumber} from "class-validator";
+
+
 
 export class CreateProductDto {
 
-    
-    
-readonly id:string;
+  readonly id: string;
 
-@IsString({message:"نام باید حروف باشد"})
-@IsNotEmpty({message:"نباید خالی باشه"})
+  @IsString({ message: 'نام باید حروف باشد' })
+  readonly name: string;
 
+  @IsNumber({},{ message: 'قیمت را وارد کن' })
+  readonly price: number;
 
- readonly name:string;
- readonly data: string[];
+  @IsNumber({},{ message: 'تعداد را وارد کن' })
+  readonly quantity: number;
+
+  
+
+  readonly data: string[];
 }
-

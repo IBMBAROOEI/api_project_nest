@@ -5,52 +5,70 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
 import { Response } from 'express';
-import { User } from 'src/user/schemas/user.schemas';
+import { User } from '../user/schemas/user.schemas';
 
 
-@Controller('api/product')
+@Controller('api/p')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
 
- 
-
   @Post()
- async create(@Res() res:Response, @Body() createProductDto: CreateProductDto, @Body('imageUrl') imageUrl: string[]): 
- Promise<Response<any, Record<string, any>>> {
-  
-     try{
- 
 
-    const data=  await this.productService.create(createProductDto,imageUrl);
-   return res.status (HttpStatus.CREATED).json({data});
+   async createStudent(@Res() response, @Body() createProductDto: CreateProductDto): Promise<any> {
+  try {
+    const newStudent = await this.productService.createStudent(createProductDto);
+    return response.status(HttpStatus.CREATED).json({
+    message: 'Student has been created successfully',
+    newStudent,});
+ } catch (err) {
+    return response.status(HttpStatus.BAD_REQUEST).json({
+    statusCode: 400,
+    message: 'Error: Student not created!',
+    error: 'Bad Request'
+ });
+ }
+}
 
-     }catch(e){
-      return res.status (HttpStatus.INTERNAL_SERVER_ERROR).
-      json({error:e.message()
-      });
 
 
-     }
-  }
+  // async create(
+  //   @Res() res: Response,
+  //   @Body() createProductDto: CreateProductDto,
+  // ) {
+  //   try {
+  //     const createdProduct = await this.productService.create(createProductDto);
+  //     return res.status(HttpStatus.CREATED).json(createdProduct);
+  //   } catch (error) {
+  //     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+  //       error: 'An error occurred while creating the product.',
+  //     });
+  //   }
+  // }
 
-   @Get()
-   async findAll(@Res() res:Response) {
+
+
+  // c(@Body() createProductDto: CreateProductDto) {
+  //   return this.productService.c(createProductDto);
+  // }
+
+  //  @Get()
+  //  async findAll(@Res() res:Response) {
     
-   const data=  await this.productService.findAll();
+  //  const data=  await this.productService.findAll();
   
-   return res.status (HttpStatus.OK).json({data});
+  //  return res.status (HttpStatus.OK).json({data});
 
-   }
+  //  }
 
-   @Get(':id')
-   async findOne(@Param('id') id: string,@Res() res:Response) {
+  //  @Get(':id')
+  //  async findOne(@Param('id') id: string,@Res() res:Response) {
 
 
-   const data= await  this.productService.findOne(id);
+  //  const data= await  this.productService.findOne(id);
 
-   return res.status (HttpStatus.OK).json({data});
-   }
+  //  return res.status (HttpStatus.OK).json({data});
+  //  }
 
    @Patch(':id')
     async update(@Param('id') id: string,@Res() res:Response, @Body() 
