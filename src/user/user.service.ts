@@ -160,7 +160,9 @@ this.configerror.addError("پسورد اشتباه هست ")
      const tokens = await this.getTokens(user._id, user.email);
      await this.updateRefreshToken(user._id, tokens.refreshToken);
 
-     this.configerror.setSuccess(true)
+     this.configerror.setSuccess(true);
+         this.configerror.setMessage("کاربر با موفقیت لاگین  شد")
+
      this.configerror.setData(tokens);
 
      return  this.configerror.getResponse();
@@ -173,12 +175,6 @@ this.configerror.addError("پسورد اشتباه هست ")
  
     }
    }
-
-
-
-
-
-
 
 
 
@@ -198,15 +194,28 @@ this.configerror.addError("پسورد اشتباه هست ")
 
 
 
-  async logout(id: string):Promise<void>{
+  async logout(id: string){
 
-
+ try{
     await this.userModel.updateOne(
-
 
       { _id: id },
       {$set:{refreshToken:null}}
-    )
+    );
+    this.configerror.setSuccess(true);
+
+    this.configerror.setMessage("کاربر با موفقیت خارج شد")
+
+
+    return  this.configerror.getResponse();
+ }catch(error){
+  this.configerror.setSuccess(false);
+  this.configerror.addError("خطا ");
+  throw new HttpException(this.configerror.getResponse(),HttpStatus.INTERNAL_SERVER_ERROR)
+
+
+ };
+ 
   }
 
 

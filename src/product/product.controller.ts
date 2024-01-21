@@ -6,6 +6,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 
 import { Response } from 'express';
 import { User } from '../user/schemas/user.schemas';
+import { Product } from './schemas/product.schema';
 
 
 @Controller('api/p')
@@ -15,42 +16,9 @@ export class ProductController {
 
   @Post()
 
-   async createStudent(@Res() response, @Body() createProductDto: CreateProductDto): Promise<any> {
-  try {
-    const newStudent = await this.productService.createStudent(createProductDto);
-    return response.status(HttpStatus.CREATED).json({
-    message: 'Student has been created successfully',
-    newStudent,});
- } catch (err) {
-    return response.status(HttpStatus.BAD_REQUEST).json({
-    statusCode: 400,
-    message: 'Error: Student not created!',
-    error: 'Bad Request'
- });
- }
-}
-
-
-
-  // async create(
-  //   @Res() res: Response,
-  //   @Body() createProductDto: CreateProductDto,
-  // ) {
-  //   try {
-  //     const createdProduct = await this.productService.create(createProductDto);
-  //     return res.status(HttpStatus.CREATED).json(createdProduct);
-  //   } catch (error) {
-  //     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-  //       error: 'An error occurred while creating the product.',
-  //     });
-  //   }
-  // }
-
-
-
-  // c(@Body() createProductDto: CreateProductDto) {
-  //   return this.productService.c(createProductDto);
-  // }
+  create(@Body() createProductDto: CreateProductDto): Promise<Product> {
+    return this.productService.create(createProductDto);
+  }
 
   //  @Get()
   //  async findAll(@Res() res:Response) {

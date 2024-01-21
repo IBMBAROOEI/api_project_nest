@@ -14,7 +14,7 @@ import { RefreshTokenDto } from './dto/refresh-user.dto';
 @Controller('api/user')
 export class UserController {
   constructor(private readonly userService: UserService,
-    private readonly jwtService:JwtService,
+    private readonly jwtService: JwtService,
      
 
     ) {}
@@ -29,6 +29,8 @@ export class UserController {
 
 
   @Post('login')
+  // @UseGuards(JwtAuthGuard)
+
   loginuser(@Body() data: CreateUserDto) {
     return this.userService.loginuser(data);
   }
@@ -68,29 +70,7 @@ async getProfile(@Request() req) {
     email,
   };
 }
-  }
-
-
-
-
-
-
-
-  
-  
-  
-  
   
 
-
   
-  
-  
-
-
-
-
-  
-  
-  
-
+}

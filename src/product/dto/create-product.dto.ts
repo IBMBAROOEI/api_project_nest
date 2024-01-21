@@ -1,7 +1,13 @@
 
-import { IsString ,IsNumber} from "class-validator";
+import { Type } from 'class-transformer';
+import { IsString, IsNumber, IsArray, ValidateNested } from 'class-validator';
 
 
+
+ export class ImageDto{
+  @IsString()
+  imageUrl:string;
+ }
 
 export class CreateProductDto {
 
@@ -16,7 +22,11 @@ export class CreateProductDto {
   @IsNumber({},{ message: 'تعداد را وارد کن' })
   readonly quantity: number;
 
+  @IsArray()
+  @ValidateNested({each:true})
+  @Type(()=>ImageDto)
+   images:ImageDto[]
+
   
 
-  readonly data: string[];
 }
