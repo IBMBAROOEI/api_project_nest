@@ -12,7 +12,6 @@ import { Configerror } from '../Erorrhandel/reponse.service';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { UserModule } from './user.module';
-import { response } from 'express';
 import { error } from 'console';
 
 @Injectable()
@@ -26,12 +25,6 @@ export class UserService {
     private readonly jwtService: JwtService,
     private readonly configerror:Configerror,
   ) {}
-
-
-
-
-
-
 
   async checkemail({ email }): Promise<UserDocument> {
     return this.userModel.findOne({ email }).exec();
@@ -72,9 +65,6 @@ export class UserService {
 
   }
 
-
-
-
   async updateRefreshToken(_id: string, refreshToken: string) {
     const hashedRefreshToken = await this.hashData(refreshToken);
     await this.userModel.findByIdAndUpdate(_id, { refreshToken: hashedRefreshToken }).exec();
@@ -83,20 +73,9 @@ export class UserService {
   }
 
 
-
-
-
-
-
   hashData(data: string) {
     return argon2.hash(data);
   }
-
-
-
-
-
-
 
   async refreshTokens(id: string , refreshToken: string): Promise<{ accessToken: string; refreshToken: string; }> {
 
@@ -118,6 +97,37 @@ export class UserService {
   }
   
 
+  // async loginuser(createUserDto: CreateUserDto): Promise<any> {
+
+  //  try{
+  //     const  {email, password}=createUserDto;
+
+  //       const user=await this.findByEmail(email);
+        
+  //       if(!user)
+
+
+
+  //          throw new BadRequestException('User does not exist');
+
+  //          const checkpass=
+  //              await bcrypt.compare(password,user.password);
+  //              if(!checkpass)
+               
+  //              throw new BadRequestException('password incorect');
+  //   const tokens = await this.getTokens(user._id, user.email);
+
+
+  //   await this.updateRefreshToken(user._id, tokens.refreshToken);
+  //   return tokens;
+  //  }
+
+  //  catch(error){
+
+  //  }
+  // }
+
+
 
 
 
@@ -129,40 +139,41 @@ export class UserService {
 
   async loginuser(createUserDto: CreateUserDto): Promise<any> {
 
-   
-      const  {email, password}=createUserDto;
+    try{
+       const  {email, password}=createUserDto;
+       const user = await this.checkemail({ email });
+       if (!user) {
+          this.configerror.setSuccess(false);
+          this.configerror.addError('ایمیل کاربر ثبت  نیست ')
+          throw new HttpException(this.configerror.getResponse(), HttpStatus.BAD_REQUEST);    
+         
+         }
+ 
+            const checkpass= await bcrypt.compare(password,user.password);
+                if(!checkpass){
+                
+this.configerror.setSuccess(false);
+this.configerror.addError("پسورد اشتباه هست ")
 
-        const user=await this.findByEmail(email);
-        
-        if(!user)
+                throw new HttpException(this.configerror.getResponse(),HttpStatus.BAD_REQUEST);
+                }
+     const tokens = await this.getTokens(user._id, user.email);
+     await this.updateRefreshToken(user._id, tokens.refreshToken);
 
+     this.configerror.setSuccess(true)
+     this.configerror.setData(tokens);
 
+     return  this.configerror.getResponse();
+    }
+ 
+    catch(error){
+       this.configerror.setSuccess(false);
+       this.configerror.addError("خطا در لاگین کاربر");
+       throw new HttpException(this.configerror.getResponse(),HttpStatus.INTERNAL_SERVER_ERROR)
+ 
+    }
+   }
 
-           throw new BadRequestException('User does not exist');
-
-           const checkpass=
-               await bcrypt.compare(password,user.password);
-               if(!checkpass)
-               
-               throw new BadRequestException('password incorect');
-    const tokens = await this.getTokens(user._id, user.email);
-
-
-    await this.updateRefreshToken(user._id, tokens.refreshToken);
-    return tokens;
-  }
-
-
-
-
-
-
-
-
-
-
-
-  
 
 
 
@@ -178,8 +189,6 @@ export class UserService {
 
   async findById(id: string): Promise<User | undefined> {
 
-    
-     
      const m=  await this.userModel.findOne({ id }).exec();
      return m;
 
