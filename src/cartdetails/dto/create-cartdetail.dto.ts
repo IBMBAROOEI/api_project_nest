@@ -1,4 +1,4 @@
- import { IsNotEmpty, IsString, IsNumber, IsOptional, IsN } from 'class-validator';
+ import { IsNotEmpty, IsString, IsNumber, IsOptional, isNumber } from 'class-validator';
 
 export class CreateCartdetailDto {
 
@@ -8,6 +8,10 @@ export class CreateCartdetailDto {
     @IsNumber({}, { message: 'لطفاً عدد را وارد کنید' })
     readonly quantity: number;
   
+
+    @IsNotEmpty()
+    @IsString()
+    readonly cartId:string;
   
     @IsOptional()
     readonly total: number;

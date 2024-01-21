@@ -14,24 +14,18 @@ enum orderstatus{
 
 @Schema()
 export class Cart {
-
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Product' })
-  productId: MongooseSchema.Types.ObjectId;
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
   userId: MongooseSchema.Types.ObjectId;
 
 
 @Prop()
 
-quantity:number;
-
 @Prop({enum:orderstatus,default:orderstatus.PENDING})
  status:orderstatus;
 
   @Prop()
   id:string;
-  @Prop()
-  total: number;
+  
 }
 
 export type CartDocument = Cart & Document;
