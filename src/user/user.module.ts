@@ -23,5 +23,5 @@ import { RefreshTokenStrategy } from './strategy/jwt.strategyRefresh';
   ],
 })
 export class UserModule {
-  static findOne: any;
+  // static findOne: any;
 }

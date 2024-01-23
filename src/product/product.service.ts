@@ -20,10 +20,11 @@ constructor(
 
 
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
+  async create(createProductDto: CreateProductDto): Promise<any> {
     try {
 
       const{name,price,quantity,images}=createProductDto;
+
       const newProduct = await this.productModel.create({
         name,
         price,
