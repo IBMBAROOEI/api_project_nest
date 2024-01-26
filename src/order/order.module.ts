@@ -5,6 +5,7 @@ import { OrderController } from './order.controller';
 import { Order, OrderSchema } from '../order/schemas/order.schemas';
 import { ProductSchema,Product } from '../product/schemas/product.schema';
 import { UserSchema } from 'src/user/user.schemas';
+import { Configerror } from '../Erorrhandel/reponse.service';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { UserSchema } from 'src/user/user.schemas';
     MongooseModule.forFeature([{name:'Product',schema:ProductSchema}])
   ],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [Configerror,OrderService],
 })
 export class OrderModule {
   static findById: any;

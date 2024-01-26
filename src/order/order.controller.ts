@@ -18,7 +18,7 @@ export class OrderController {
 
 async showOrderUser(@Param('id')id:string):Promise<any>{
 
- return await this.orderService.showOrderUser(id);
+ return await this.orderService.showOrderUser(id)
 }
 
 
@@ -36,8 +36,8 @@ async showOrderUser(@Param('id')id:string):Promise<any>{
 
   @Get()
 
-  async getAllOrders(): Promise<Order[]> {
-    try {
+  async getAllOrders(): Promise<any> {
+    
       const orders = await this.orderService.getAllOrder();
 
       return orders.map(order => ({
@@ -48,9 +48,7 @@ async showOrderUser(@Param('id')id:string):Promise<any>{
           price: product.price
         }))
       }));
-    } catch (error) {
-      console.log(error);
-    }
+   
  
   }
 
@@ -62,15 +60,8 @@ async showOrderUser(@Param('id')id:string):Promise<any>{
   @Param('id') id:string,
   @Param('productId')productId:string,):Promise<void>{
 
-
-    try{
-
-      await this.orderService.deleteproduct(id,productId)
-    }catch(error){
-
-      console.log("ok")
-    }
-
+ await this.orderService.deleteproduct(id,productId)
+ 
 
  }
 
