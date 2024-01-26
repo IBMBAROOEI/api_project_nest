@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import {Imagemodule } from './imageupload/image.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { OrderModule } from './order/order.module';
 
 
 
@@ -16,7 +17,7 @@ import { join } from 'path';
       rootPath: join(__dirname,  '../upload'), // مسیر فایل‌های استاتیک
     }),
     Imagemodule,UserModule,ProductModule,MongooseModule.
-    forRoot('mongodb://127.0.0.1:27017/blog'), 
+    forRoot('mongodb://127.0.0.1:27017/blog'), OrderModule, 
 
 
 ],
