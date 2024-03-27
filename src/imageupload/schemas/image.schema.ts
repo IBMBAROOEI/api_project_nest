@@ -8,6 +8,7 @@ export class Image {
 
 
   @Prop()
+  _id:string
   imageUrl: string;
 }
 

@@ -7,6 +7,7 @@ import { IsString, IsNumber, IsArray, ValidateNested } from 'class-validator';
  export class ImageDto{
   @IsString()
   imageUrl:string;
+  
  }
 
 export class CreateProductDto {

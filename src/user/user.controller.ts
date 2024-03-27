@@ -46,14 +46,13 @@ async logout(@Req() req):Promise<void> {
 
 
 
-
-@Post('refresh')
 @UseGuards(RefreshTokenGuard)
 
-async refreshToken(@Body('refreshToken') refreshToken: string, @Request() req){
-  const id = req.user.id; 
-   console.log(id)
-    return this.userService.refreshTokens(id, refreshToken);
+@Get('refresh')
+refreshTokens(@Req() req) {
+  const userId = req.user['id'];
+  const refreshToken = req.user['refreshToken'];
+  return this.userService.refreshTokens(userId, refreshToken);
 }
 
 

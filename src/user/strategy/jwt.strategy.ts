@@ -6,17 +6,18 @@ import { UserService } from '../user.service';
 
 type JwtPayload = {
   id: string;
+  sub:string;
   email: string;
 };
 
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
   userService: any;
   constructor(private UserService:UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
+      // ignoreExpiration: false,
       secretOrKey: 'secret',
     });
    }

@@ -14,7 +14,9 @@ export class Product {
   quantity: number;
 
   @Prop({ type: [{ imageUrl: String }] })
- images:{ imageUrl:string}[];
+ images:{
+   [x: string]: any; imageUrl:string
+}[];
 }
 
 export type ProductDocument = Product & Document;

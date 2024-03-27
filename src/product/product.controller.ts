@@ -38,16 +38,31 @@ export class ProductController {
   //  }
 
    @Patch(':id')
-    async update(@Param('id') id: string,@Res() res:Response, @Body() 
-   updateProductDto: UpdateProductDto) {
+    async update(@Param('id') id: string,@Body()updateProductDto: UpdateProductDto) {
 
-    const  data= await this.productService.update(id, updateProductDto);
+     return await this.productService.update(id, updateProductDto);
 
-    return res.status (HttpStatus.OK).json({data});
 
    }
 
 //
+
+
+
+
+
+@Delete(':productId/:imageId')
+async deleteImage (
+@Param('productId')productId:string,
+@Param('imageId')imageId:string,
+
+):Promise<void>{
+  return await this.productService.deletImage(productId,imageId)
+}
+
+
+
+
 
 
 @Delete(':id') 
